@@ -33,7 +33,7 @@ app.use(express.static(path.resolve(__dirname, './public')));
 // 4. Dynamic Route: Product Details (動態路由與參數)
 // 使用 Route Parameters (:model) 來接收網址中的變動部分
 // ---------------------------------------------------------
-app.get('/product/:model.html', (req, res) => {
+app.get('/product/:model', (req, res) => {
     // 從 Params 取得網址上的型號
     const { model } = req.params;
 
