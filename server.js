@@ -8,7 +8,6 @@ const PORT = process.env.PORT || 3000;
 
 // 1. Data Source: 載入 JSON 資料庫 (使用解構賦值提取 data 陣列)
 const { data } = require('./data/lens.json');
-const { data } = require('./data/lens.json');
 // ---------------------------------------------------------
 // 2. Global Middleware: Logger (全域日誌紀錄)
 // 只要有任何請求進入伺服器，都會執行這段函式
