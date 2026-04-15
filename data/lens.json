@@ -2,24 +2,24 @@
   "data": [
     {
       "id": 1,
-      "model": "ILCE-6700",
-      "name": "Sony Alpha 6700",
-      "fileName": "a6700.jpg",
-      "imageUrl": "/images/a6700.jpg"
+      "model": "iPhone-17-Air",
+      "name": "iPhone 17 Air",
+      "fileName": "iphone-17-air.jpg",
+      "imageUrl": "/images/iphone-17-air.jpg"
     },
     {
       "id": 2,
-      "model": "ILCE-7M5",
-      "name": "Sony Alpha 7 V",
-      "fileName": "a7m5.jpg",
-      "imageUrl": "/images/a7m5.jpg"
+      "model": "iPhone-17",
+      "name": "iPhone 17",
+      "fileName": "iphone-17.jpg",
+      "imageUrl": "/images/iphone-17.jpg"
     },
     {
       "id": 3,
-      "model": "ILCE-1M2",
-      "name": "Sony Alpha 1 II",
-      "fileName": "a1m2.jpg",
-      "imageUrl": "/images/a1m2.jpg"
+      "model": "iphone-17-pro",
+      "name": "iPhone 17 pro",
+      "fileName": "iphone-17-pro.png",
+      "imageUrl": "/images/iphone-17-pro.png"
     }
   ]
 }
