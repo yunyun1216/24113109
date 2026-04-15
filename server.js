@@ -50,7 +50,7 @@ app.get('/product/:model', (req, res) => {
     // Response: 使用 Method Chaining 傳送渲染後的內容
     res.send(`
         <div style="text-align:center; font-family:sans-serif;">
-            <h1>Sony Product Info (產品資訊)</h1>
+            <h1>iPhone 17 Info (產品資訊)</h1>
             <hr>
             <h2>${product.name}</h2>
             <p>Model: ${product.model}</p>
