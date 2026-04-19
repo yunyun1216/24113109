@@ -1,0 +1,102 @@
+/* 全域設定 */
+body {
+    background-color: #f5f5f7; /* Apple 經典淺灰底 */
+    color: #1d1d1f; /* 近乎黑的深灰 */
+    font-family: "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+/* 標題區塊 */
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.brand {
+    font-size: 14px;
+    font-weight: 600;
+    color: #86868b;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* 卡片網格 */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* 卡片設計 - 完全移除藍色與底線 */
+.card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px; /* 大圓角 */
+    text-decoration: none; /* 移除底線 */
+    color: inherit; /* 繼承文字顏色 */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.card:hover {
+    transform: scale(1.03); /* 輕微放大 */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.tag {
+    font-size: 12px;
+    color: #bf4800; /* 亮橘色作為提示 */
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #86868b;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.more {
+    margin-top: auto;
+    color: #0066cc; /* Apple 的藍色僅用於「了解更多」字樣 */
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 頁尾 */
+.footer {
+    margin-top: 100px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #d2d2d7;
+}
+
+.footer a {
+    color: #86868b;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}

@@ -3,90 +3,96 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
-// Bootstrap: 優先使用雲端環境分配的 PORT，否則預設使用 3000
 const PORT = process.env.PORT || 3000;
 
-// 1. Data Source: 載入 JSON 資料庫 (使用解構賦值提取 data 陣列)
+// 1. Data Source: 載入 JSON 資料
 const { data } = require('./data/lens.json');
-// ---------------------------------------------------------
-// 2. Global Middleware: Logger (全域日誌紀錄)
-// 只要有任何請求進入伺服器，都會執行這段函式
-// ---------------------------------------------------------
+
+// 2. Global Middleware: Logger
 app.use((req, res, next) => {
-    // 取得時間、HTTP Method (請求方法) 與 URL (網址路徑)
     const log = `[${new Date().toLocaleString()}] ${req.method} ${req.url}\n`;
-
-    // 使用 fs.appendFileSync 將紀錄「追加」到 access.log 檔案中
     fs.appendFileSync(path.resolve(__dirname, './access.log'), log);
-
-    // 呼叫 next()，讓請求往下一個 Middleware 或 Route 傳遞
     next();
 });
 
-// ---------------------------------------------------------
-// 3. Static Assets Middleware (靜態資源中間件)
-// 將 public 資料夾開放，讓瀏覽器可以直接讀取 CSS、圖片、HTML
-// ---------------------------------------------------------
+// 3. Static Assets: 開放 public 資料夾
 app.use(express.static(path.resolve(__dirname, './public')));
 
-// ---------------------------------------------------------
-// 4. Dynamic Route: Product Details (動態路由與參數)
-// 使用 Route Parameters (:model) 來接收網址中的變動部分
-// ---------------------------------------------------------
+// 4. Dynamic Route: 產品詳情頁 (風格對齊 Apple)
 app.get('/product/:model', (req, res) => {
-    // 從 Params 取得網址上的型號
     const { model } = req.params;
-
-    // 在 JSON 資料中尋找對應的型號
     const product = data.find(item => item.model === model);
 
-    // Error Handling: 如果找不到產品，回傳 404 狀態碼與錯誤訊息
     if (!product) {
-        return res.status(404)
-            .set('Content-Type', 'text/html; charset=utf-8')
-            .send('<h1>404 找不到型號</h1>');
+        return res.status(404).send(`
+            <body style="background:#f5f5f7; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; color:#1d1d1f;">
+                <div style="text-align:center;">
+                    <h1 style="font-size:80px; margin:0; color:#d2d2d7;">404</h1>
+                    <p>抱歉，我們找不到該款相機。</p>
+                    <a href="/" style="color:#0066cc; text-decoration:none;">返回首頁</a>
+                </div>
+            </body>
+        `);
     }
 
-    // Response: 使用 Method Chaining 傳送渲染後的內容
     res.send(`
-        <div style="text-align:center; font-family:sans-serif;">
-            <h1>iPhone 17 Info (產品資訊)</h1>
-            <hr>
-            <h2>${product.name}</h2>
-            <p>Model: ${product.model}</p>
-            <img src="${product.imageUrl}" alt="${product.name}" style="width:400px;">
-            <br><br>
-            <a href="/">Back to Home (回首頁)</a>
-        </div>
+        <!DOCTYPE html>
+        <html lang="zh-TW">
+        <head>
+            <meta charset="UTF-8">
+            <title>${product.name} - Sony Alpha</title>
+            <style>
+                body { background-color: #f5f5f7; color: #1d1d1f; font-family: "SF Pro Display", "Helvetica Neue", Arial, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+                .detail-card { background: #ffffff; padding: 60px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); text-align: center; max-width: 600px; width: 90%; }
+                .brand { font-size: 14px; font-weight: 600; color: #ffffff; text-transform: uppercase; margin-bottom: 10px; }
+                h1 { font-size: 40px; margin-bottom: 10px; font-weight: 700; }
+                .model-tag { color: #bf4800; font-weight: 600; margin-bottom: 30px; display: block; }
+                img { width: 100%; max-width: 400px; border-radius: 20px; margin-bottom: 30px; }
+                .back-btn { display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; font-weight: 500; }
+                .back-btn:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <div class="detail-card">
+                <p class="brand">Sony Alpha Series</p>
+                <h1>${product.name}</h1>
+                <span class="model-tag">Model: ${product.model}</span>
+                <img src="${product.imageUrl}" alt="${product.name}">
+                <br>
+                <a href="/" class="back-btn">&lsaquo; 返回產品清單</a>
+            </div>
+        </body>
+        </html>
     `);
 });
 
-// ---------------------------------------------------------
-// 5. Protected Route: Admin (受保護的路由與授權)
-// 透過 Query String (查詢字串) 進行簡單的 Authorization (授權驗證)
-// ---------------------------------------------------------
+// 5. Protected Route: Admin (後台也美化)
 app.get('/admin', (req, res) => {
-    // 檢查 URL 參數中是否有 code=521
     const isAuth = req.query.code === '521';
-    const message = isAuth ? 'Welcome to Admin (歡迎進入後台)' : 'Access Denied (暗號錯誤)';
-
-    // 根據驗證結果給予 200 (成功) 或 403 (禁止存取) 狀態碼
-    res.status(isAuth ? 200 : 403)
-        .set('Content-Type', 'text/html; charset=utf-8')
-        .send(`<h1 style="text-align:center;">${message}</h1>`);
+    const message = isAuth ? '歡迎進入 Sony 管理後台' : '存取被拒：暗號錯誤';
+    
+    res.status(isAuth ? 200 : 403).send(`
+        <body style="background:#1d1d1f; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif;">
+            <div style="text-align:center; border: 1px solid #333; padding: 50px; border-radius: 20px;">
+                <h1 style="font-weight:300; letter-spacing:2px;">${message}</h1>
+                <a href="/" style="color:#86868b; text-decoration:none; font-size:12px;">返回官網</a>
+            </div>
+        </body>
+    `);
 });
 
-// ---------------------------------------------------------
-// 6. Wildcard Route: Catch-all (萬用路由 / 404 防呆)
-// 捕捉所有上述路由都沒有對中的「不明路徑」，這必須放在最下面
-// ---------------------------------------------------------
+// 6. Catch-all (防呆)
 app.all(/.*$/, (req, res) => {
-    res.status(404)
-        .set('Content-Type', 'text/html; charset=utf-8')
-        .send('<h1 style="text-align:center; padding-top:50px;">404 Not Found (抱歉，路徑不存在)</h1>');
+    res.status(404).send(`
+        <body style="background:#f5f5f7; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif;">
+            <div style="text-align:center;">
+                <h1 style="color:#d2d2d7;">404 Page Not Found</h1>
+                <a href="/" style="color:#0066cc; text-decoration:none;">回首頁</a>
+            </div>
+        </body>
+    `);
 });
 
-// 7. Start Server: 啟動監聽
 app.listen(PORT, () => {
-    console.log(`Server is running at: http://localhost:${PORT}`);
+    console.log(`Sony Store is Live at: http://localhost:${PORT}`);
 });
