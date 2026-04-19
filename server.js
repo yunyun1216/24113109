@@ -43,7 +43,7 @@ app.get('/product/:model', (req, res) => {
             <title>${product.name} - Sony Alpha</title>
             <style>
                 body { background-color: #f5f5f7; color: #1d1d1f; font-family: "SF Pro Display", "Helvetica Neue", Arial, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-                .detail-card { background: #ffffff; padding: 60px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); text-align: center; max-width: 600px; width: 90%; }
+                .detail-card { background: #ffffff; padding: 60px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); text-align: center; max-width: 600px; width: 500px; }
                 .brand { font-size: 14px; font-weight: 600; color: #ffffff; text-transform: uppercase; margin-bottom: 10px; }
                 h1 { font-size: 40px; margin-bottom: 10px; font-weight: 700; }
                 .model-tag { color: #bf4800; font-weight: 600; margin-bottom: 30px; display: block; }
